@@ -1,2 +1,7 @@
 
 .gradle/
+**/.idea/workspace.xml **/.idea/tasks.xml
+android/build/
+core/build/
+shared/build/
+local.properties
