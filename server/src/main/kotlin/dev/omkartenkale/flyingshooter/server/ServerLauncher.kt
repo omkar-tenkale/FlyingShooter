@@ -4,5 +4,14 @@ package dev.omkartenkale.flyingshooter.server
 
 /** Launches the server application. */
 fun main() {
-    TODO("Implement server application.")
+    printInitMessage()
+}
+
+fun printInitMessage() {
+    println("""
+        
+        
+        (҂-_• ) ▄︻デ══━一
+        
+    """)
 }

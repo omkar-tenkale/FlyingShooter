@@ -1,10 +1,23 @@
 # FlyingShooter
 
-A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/tommyettinger/gdx-liftoff).
-
-This project was generated with a Kotlin project template that includes Kotlin application launchers and [KTX](https://libktx.github.io/) utilities.
-
-## Platforms
+## Module dependency graph
+                               ┌────────────────────┐
+                               │                    │
+                               │      android       │
+                               │                    │
+                               └─────────┬──────────┘
+                                         │
+      ┌────────────────────┐   ┌─────────▼──────────┐
+      │                    │   │                    │
+      │       server       │   │       core         │
+      │                    │   │                    │
+      └────────────────┬───┘   └──┬─────────────────┘
+                       │          │
+                   ┌───▼──────────▼─────┐
+                   │                    │
+                   │      shared        │
+                   │                    │
+                   └────────────────────┘
 
 - `core`: Main module with the application logic shared by all platforms.
 - `android`: Android mobile platform. Needs Android SDK.

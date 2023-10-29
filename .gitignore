@@ -4,4 +4,6 @@
 android/build/
 core/build/
 shared/build/
+server/build/
 local.properties
+.idea/misc.xml
