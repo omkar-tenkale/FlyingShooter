@@ -5,7 +5,7 @@ plugins {
 val appName: String by project
 
 application{
-  mainClassName = "dev.omkartenkale.flyingshooter.server.ServerLauncher"
+  mainClassName = "flyingshooter.server.ServerLauncher"
 }
 eclipse {
   project.name = "$appName-server"
@@ -13,6 +13,9 @@ eclipse {
 
 dependencies {
   implementation(project(":shared"))
+
+  testImplementation(rootProject.extra["konsist"]!!)
+  testImplementation(rootProject.extra["kotest"]!!)
 }
 
 tasks.jar {
@@ -29,7 +32,7 @@ tasks.jar {
     exclude("META-INF/maven/**")
   }
   manifest {
-    attributes["Main-Class"] = "dev.omkartenkale.flyingshooter.server.ServerLauncher"
+    attributes["Main-Class"] = "flyingshooter.server.ServerLauncher"
   }
   doLast {
     file(archiveFile).setExecutable(true, false)
@@ -38,4 +41,8 @@ tasks.jar {
 
 tasks.register("dist") {
   dependsOn(tasks.jar)
+}
+
+tasks.withType<Test>().configureEach {
+  useJUnitPlatform()
 }

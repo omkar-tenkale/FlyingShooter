@@ -43,7 +43,6 @@ android {
     versionName = "1.0"
     multiDexEnabled = true
   }
-  namespace = "dev.omkartenkale.flyingshooter"
   compileOptions {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
@@ -71,6 +70,9 @@ dependencies {
   coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.2.2")
   implementation("com.badlogicgames.gdx:gdx-backend-android:$gdxVersion")
   implementation(project(":core"))
+
+  testImplementation(rootProject.extra["konsist"]!!)
+  testImplementation(rootProject.extra["kotest"]!!)
 
   natives("com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-arm64-v8a")
   natives("com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-armeabi-v7a")
@@ -132,5 +134,9 @@ tasks.register<Exec>("run") {
   }
 
   val adb = File(path, "platform-tools/adb")
-  commandLine(adb.absolutePath, "shell", "am", "start", "-n", "dev.omkartenkale.flyingshooter/dev.omkartenkale.flyingshooter.android.AndroidLauncher")
+  commandLine(adb.absolutePath, "shell", "am", "start", "-n", "dev.omkartenkale.flyingshooter/flyingshooter.android.AndroidLauncher")
+}
+
+tasks.withType<Test>().configureEach {
+  useJUnitPlatform()
 }

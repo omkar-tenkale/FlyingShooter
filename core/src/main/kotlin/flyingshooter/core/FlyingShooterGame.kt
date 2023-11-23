@@ -1,4 +1,4 @@
-package dev.omkartenkale.flyingshooter
+package flyingshooter.core
 
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.Texture.TextureFilter.Linear

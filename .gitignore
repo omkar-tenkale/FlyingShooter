@@ -7,3 +7,6 @@ shared/build/
 server/build/
 local.properties
 .idea/misc.xml
+.idea/modules.xml
+.idea/modules/shared/FlyingShooter.shared.test.iml
+.idea/modules/shared/FlyingShooter.shared.main.iml

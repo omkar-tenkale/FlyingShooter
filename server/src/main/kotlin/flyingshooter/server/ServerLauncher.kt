@@ -1,6 +1,6 @@
 @file:JvmName("ServerLauncher")
 
-package dev.omkartenkale.flyingshooter.server
+package flyingshooter.server
 
 /** Launches the server application. */
 fun main() {

@@ -1,5 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+apply(from = "dependencies.gradle.kts")
+
 buildscript {
   repositories {
     mavenCentral()
@@ -56,4 +58,3 @@ subprojects {
     maven(url = "https://jitpack.io")
   }
 }
-

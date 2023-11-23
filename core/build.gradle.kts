@@ -42,4 +42,12 @@ dependencies {
   api(kotlin("stdlib"))
   api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion")
   api(project(":shared"))
+
+
+  testImplementation(rootProject.extra["konsist"]!!)
+  testImplementation(rootProject.extra["kotest"]!!)
+}
+
+tasks.withType<Test>().configureEach {
+  useJUnitPlatform()
 }
