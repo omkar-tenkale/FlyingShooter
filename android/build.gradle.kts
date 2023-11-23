@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-  compileSdk = 32
+  compileSdk = 33
   sourceSets {
     named("main") {
       manifest.srcFile("AndroidManifest.xml")
@@ -37,8 +37,8 @@ android {
   }
   defaultConfig {
     applicationId = "dev.omkartenkale.flyingshooter"
-    minSdkVersion(19)
-    targetSdkVersion(32)
+    minSdkVersion(21)
+    targetSdkVersion(33)
     versionCode = 1
     versionName = "1.0"
     multiDexEnabled = true
@@ -54,6 +54,12 @@ android {
       isMinifyEnabled = true
       setProguardFiles(listOf(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"))
     }
+  }
+  buildFeatures {
+    compose = true
+  }
+  composeOptions {
+    kotlinCompilerExtensionVersion = "1.4.0"
   }
 
 }
@@ -73,6 +79,18 @@ dependencies {
 
   testImplementation(rootProject.extra["konsist"]!!)
   testImplementation(rootProject.extra["kotest"]!!)
+
+  implementation("androidx.compose.ui:ui:1.4.0")
+  implementation("androidx.activity:activity-compose:1.4.0")
+  implementation("androidx.fragment:fragment-ktx:1.4.0")
+
+  implementation("androidx.compose.material:material:1.4.0")
+//  implementation("androidx.ui:ui-tooling:0.1.0-dev17")
+
+  val voyagerVersion = "1.0.0-rc10"
+  implementation("cafe.adriel.voyager:voyager-navigator:$voyagerVersion")
+  implementation("cafe.adriel.voyager:voyager-transitions:$voyagerVersion")
+  implementation("cafe.adriel.voyager:voyager-koin:$voyagerVersion")
 
   natives("com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-arm64-v8a")
   natives("com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-armeabi-v7a")
