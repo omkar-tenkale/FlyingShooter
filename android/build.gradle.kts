@@ -5,8 +5,10 @@ plugins {
     id("kotlin-android")
 }
 
+val composeVersion = "1.5.0"
+
 android {
-  compileSdk = 33
+  compileSdk = 34
   sourceSets {
     named("main") {
       manifest.srcFile("AndroidManifest.xml")
@@ -38,17 +40,22 @@ android {
   defaultConfig {
     applicationId = "dev.omkartenkale.flyingshooter"
     minSdkVersion(21)
-    targetSdkVersion(33)
+    targetSdkVersion(34)
     versionCode = 1
     versionName = "1.0"
     multiDexEnabled = true
   }
+  namespace = "app.flyingshooter"
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
     isCoreLibraryDesugaringEnabled = true
   }
-  kotlinOptions.jvmTarget = "1.8"
+  kotlin {
+    jvmToolchain {
+      languageVersion.set(JavaLanguageVersion.of("17"))
+    }
+  }
   buildTypes {
     named("release") {
       isMinifyEnabled = true
@@ -57,9 +64,11 @@ android {
   }
   buildFeatures {
     compose = true
+    renderScript = true
+    aidl = true
   }
   composeOptions {
-    kotlinCompilerExtensionVersion = "1.4.0"
+    kotlinCompilerExtensionVersion = composeVersion
   }
 
 }
@@ -80,11 +89,11 @@ dependencies {
   testImplementation(rootProject.extra["konsist"]!!)
   testImplementation(rootProject.extra["kotest"]!!)
 
-  implementation("androidx.compose.ui:ui:1.4.0")
-  implementation("androidx.activity:activity-compose:1.4.0")
-  implementation("androidx.fragment:fragment-ktx:1.4.0")
+  implementation("androidx.compose.ui:ui:$composeVersion")
+  implementation("androidx.activity:activity-compose:$composeVersion")
+  implementation("androidx.fragment:fragment-ktx:$composeVersion")
 
-  implementation("androidx.compose.material:material:1.4.0")
+  implementation("androidx.compose.material:material:$composeVersion")
 //  implementation("androidx.ui:ui-tooling:0.1.0-dev17")
 
   val voyagerVersion = "1.0.0-rc10"

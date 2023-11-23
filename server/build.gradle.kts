@@ -5,7 +5,7 @@ plugins {
 val appName: String by project
 
 application{
-  mainClassName = "flyingshooter.server.ServerLauncher"
+  mainClass.set("flyingshooter.server.ServerLauncher")
 }
 eclipse {
   project.name = "$appName-server"

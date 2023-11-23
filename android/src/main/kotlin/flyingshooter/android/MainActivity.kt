@@ -18,7 +18,9 @@ class MainActivity : FragmentActivity(), AndroidFragmentApplication.Callbacks {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent{
-            Navigator(HomeScreen)
+            Navigator(HomeScreen) { navigator ->
+                SlideTransition(navigator)
+            }
         }
     }
 
