@@ -101,6 +101,15 @@ dependencies {
   implementation("cafe.adriel.voyager:voyager-transitions:$voyagerVersion")
   implementation("cafe.adriel.voyager:voyager-koin:$voyagerVersion")
 
+  val kotPrefVersionVersion = "2.13.1"
+  implementation("com.google.code.gson:gson:2.10.1")
+  implementation("com.chibatching.kotpref:kotpref:$kotPrefVersionVersion")
+  implementation("com.chibatching.kotpref:enum-support:$kotPrefVersionVersion")
+  implementation("com.chibatching.kotpref:gson-support:$kotPrefVersionVersion")
+  implementation("com.chibatching.kotpref:gson-support:$kotPrefVersionVersion")
+
+  api("io.insert-koin:koin-android:${rootProject.extra["koinVersion"]!!}")
+
   natives("com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-arm64-v8a")
   natives("com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-armeabi-v7a")
   natives("com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-x86")
