@@ -14,12 +14,9 @@ class GameFragment : AndroidFragmentApplication(),AndroidFragmentApplication.Cal
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = initializeForView(FlyingShooterGame(), AndroidApplicationConfiguration().apply {
-        useImmersiveMode = true
-    })
+    ): View? = initializeForView(FlyingShooterGame(), AndroidApplicationConfiguration())
 
     companion object {
         val TAG: String = this::class.java.canonicalName
     }
-
 }

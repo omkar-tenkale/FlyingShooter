@@ -1,8 +1,12 @@
 package flyingshooter.android
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.FragmentActivity
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.transitions.SlideTransition
@@ -13,18 +17,29 @@ import flyingshooter.android.presentation.screens.home.HomeScreen
 import flyingshooter.android.presentation.screens.home.game.GameScreen
 import flyingshooter.core.FlyingShooterGame
 
-/** Launches the Android application. */
 class MainActivity : FragmentActivity(), AndroidFragmentApplication.Callbacks {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent{
-            Navigator(HomeScreen) { navigator ->
-                SlideTransition(navigator)
-            }
+        hideSystemUI()
+        setContent {
+            Navigator(HomeScreen) { SlideTransition(it) }
         }
     }
 
     override fun exit() {
-        println()
+        println("AndroidFragmentApplication.Callbacks Exit")
+    }
+
+    private fun hideSystemUI() {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        WindowInsetsControllerCompat(window, window.decorView).let { controller ->
+            controller.hide(WindowInsetsCompat.Type.systemBars())
+            controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        }
+    }
+
+    private fun showSystemUI() {
+        WindowCompat.setDecorFitsSystemWindows(window, true)
+        WindowInsetsControllerCompat(window, window.decorView).show(WindowInsetsCompat.Type.systemBars())
     }
 }
