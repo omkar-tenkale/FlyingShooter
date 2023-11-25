@@ -2,7 +2,7 @@
 
 dependencies {
 
-  val gdxVersion = "1.11.0"
+  val gdxVersion = rootProject.extra["gdxVersion"]!!
   val aiVersion = "1.8.2"
   val kryoVersion = "5.4.0"
   val guacamoleVersion = "0.3.2"
@@ -13,7 +13,6 @@ dependencies {
   val artemisOdbVersion = "2.3.0"
   val kotlinxCoroutinesVersion = "1.6.4"
   api("com.badlogicgames.gdx:gdx-ai:$aiVersion")
-  api("com.badlogicgames.gdx:gdx-box2d:$gdxVersion")
   api("com.badlogicgames.gdx:gdx-freetype:$gdxVersion")
   api("com.badlogicgames.gdx:gdx:$gdxVersion")
   api("com.esotericsoftware:kryo:$kryoVersion")
