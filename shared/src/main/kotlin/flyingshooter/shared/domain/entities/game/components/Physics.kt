@@ -1,6 +1,7 @@
 package flyingshooter.shared.domain.entities.game.components
 
 import com.badlogic.gdx.physics.box2d.Body
+import com.badlogic.gdx.physics.box2d.BodyDef
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.World
 import com.badlogic.gdx.physics.box2d.World as Box2DWorld
@@ -15,7 +16,7 @@ class PhysicsComponent : BaseComponent<PhysicsComponent> {
     lateinit var body: Body
 
     override fun World.onAdd(entity: Entity) {
-        body = inject<Box2DWorld>().createBody( /* body creation code omitted */)
+        body = inject<Box2DWorld>().createBody(BodyDef())
         body.userData = entity
     }
 
