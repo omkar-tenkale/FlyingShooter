@@ -3,6 +3,7 @@ import java.util.Properties
 plugins {
     id("com.android.application")
     id("kotlin-android")
+    kotlin("plugin.serialization") version "1.9.21"
 }
 
 val composeVersion = "1.5.0"
@@ -23,6 +24,8 @@ android {
   packagingOptions {
     resources {
       excludes += setOf(
+        "META-INF/INDEX.LIST",
+        "META-INF/io.netty.versions.properties",
         "META-INF/robovm/ios/robovm.xml",
         "META-INF/DEPENDENCIES.txt",
         "META-INF/DEPENDENCIES",
@@ -92,7 +95,9 @@ dependencies {
   testImplementation(rootProject.extra["konsist"]!!)
   testImplementation(rootProject.extra["kotest"]!!)
 
-  implementation("androidx.compose.ui:ui:$composeVersion")
+  implementation("androidx.compose.ui:ui:$composeVersion") {
+    exclude(group= "com.google.guava", module= "listenablefuture")
+  }
   implementation("androidx.activity:activity-compose:$composeVersion")
   implementation("androidx.fragment:fragment-ktx:$composeVersion")
 
@@ -111,7 +116,22 @@ dependencies {
   implementation("com.chibatching.kotpref:gson-support:$kotPrefVersionVersion")
   implementation("com.chibatching.kotpref:gson-support:$kotPrefVersionVersion")
 
-  api("io.insert-koin:koin-android:${rootProject.extra["koinVersion"]!!}")
+  val koinVersion = rootProject.extra["koinVersion"]!!
+  api("io.insert-koin:koin-android:$koinVersion") {
+    exclude(group= "com.google.guava", module= "listenablefuture")
+  }
+//  api("io.insert-koin:koin-compose:$koinVersion")
+  api("io.insert-koin:koin-androidx-compose:$koinVersion")
+
+  val ktorVersion = rootProject.extra["ktorVersion"]!!
+  implementation("io.ktor:ktor-client-core:$ktorVersion")
+  implementation("io.ktor:ktor-client-cio:$ktorVersion")
+  implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+  implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+  implementation("io.ktor:ktor-client-websockets-jvm:$ktorVersion")
+  implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+  implementation("io.ktor:ktor-client-logging:$ktorVersion")
+  implementation("io.ktor:ktor-client-auth:$ktorVersion")
 
   natives("com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-arm64-v8a")
   natives("com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-armeabi-v7a")

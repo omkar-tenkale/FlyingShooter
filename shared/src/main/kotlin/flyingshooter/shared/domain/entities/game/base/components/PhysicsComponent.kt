@@ -1,17 +1,17 @@
-package flyingshooter.shared.domain.entities.game.components
+package flyingshooter.shared.domain.entities.game.base.components
 
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.World
 import com.badlogic.gdx.physics.box2d.World as Box2DWorld
-import flyingshooter.shared.domain.entities.game.base.BaseComponent
-import flyingshooter.shared.domain.entities.game.base.BaseComponentType
+import flyingshooter.shared.domain.entities.game.base.ECSComponent
+import flyingshooter.shared.domain.entities.game.base.ECSComponentType
 
-class PhysicsComponent : BaseComponent<PhysicsComponent> {
+internal class PhysicsComponent : ECSComponent<PhysicsComponent> {
 
     override fun type() = PhysicsComponent
-    companion object : BaseComponentType<PhysicsComponent>()
+    companion object : ECSComponentType<PhysicsComponent>()
 
     lateinit var body: Body
 

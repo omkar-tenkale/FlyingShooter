@@ -3,6 +3,8 @@ package flyingshooter.core
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.Texture.TextureFilter.Linear
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.utils.viewport.ExtendViewport
 import ktx.app.KtxGame
 import ktx.app.KtxScreen
 import ktx.app.clearScreen
@@ -22,7 +24,8 @@ class FlyingShooterGame : KtxGame<KtxScreen>() {
 
 class FirstScreen : KtxScreen {
     private val image = Texture("logo.png".toInternalFile(), true).apply { setFilter(Linear, Linear) }
-    private val batch = SpriteBatch()
+    private val batch by lazy{ SpriteBatch() }
+    val gameStage by lazy { Stage(ExtendViewport(16f, 9f), batch) }
 
     override fun render(delta: Float) {
         clearScreen(red = 0.7f, green = 0.7f, blue = 0.7f)

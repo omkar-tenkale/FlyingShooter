@@ -5,10 +5,10 @@ apply(from = "dependencies.gradle.kts")
 buildscript {
   repositories {
     mavenCentral()
-    maven(url = "https://s01.oss.sonatype.org")
     mavenLocal()
     google()
     gradlePluginPortal()
+    maven(url = "https://s01.oss.sonatype.org")
     maven(url = "https://oss.sonatype.org/content/repositories/snapshots/")
     maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots/")
   }
