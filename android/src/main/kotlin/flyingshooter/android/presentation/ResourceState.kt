@@ -7,8 +7,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import flyingshooter.android.domain.Resource
-import flyingshooter.android.domain.entities.GameInfo
+import flyingshooter.shared.domain.util.Resource
 
 @Composable
 fun <T> ResourceState(

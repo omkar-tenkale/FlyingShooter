@@ -2,8 +2,6 @@ package flyingshooter.shared.data.repositories
 
 import flyingshooter.shared.domain.entities.connection.Client
 import flyingshooter.shared.domain.entities.connection.ConnectionRepository
-import flyingshooter.shared.domain.entities.game.events.GameEvent
-import kotlinx.coroutines.flow.MutableSharedFlow
 import java.util.Collections
 
 internal class DefaultConnectionRepository: ConnectionRepository {

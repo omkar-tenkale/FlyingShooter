@@ -4,14 +4,11 @@ import android.content.Context
 import android.content.pm.PackageInfo
 import android.os.Build
 import android.util.Log
-import flyingshooter.android.data.datasource.remote.game.events.recieved.ServerEventData
-import flyingshooter.android.data.datasource.remote.game.events.sent.toData
+import flyingshooter.shared.domain.entities.game.events.ServerEventType
 import flyingshooter.android.data.util.SignatureUtil
-import flyingshooter.android.domain.entities.GameId
-import flyingshooter.android.domain.entities.GameInfo
+import flyingshooter.core.domain.game.GameId
+import flyingshooter.core.domain.game.GameInfo
 import flyingshooter.android.domain.entities.GameType
-import flyingshooter.android.domain.entities.game.events.recieved.ServerEvent
-import flyingshooter.android.domain.entities.game.events.sent.ClientEvent
 import flyingshooter.android.domain.entities.server.GameServerInfo
 import flyingshooter.android.domain.entities.server.GameServerRepository
 import flyingshooter.shared.domain.util.required
@@ -19,6 +16,7 @@ import flyingshooter.shared.presentation.routes.games.PostGameResponse
 import flyingshooter.shared.presentation.routes.games.GetGamesResponse
 import flyingshooter.shared.presentation.routes.sessions.ClientInfo
 import flyingshooter.shared.presentation.routes.sessions.CreateSessionRequest
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO
@@ -35,24 +33,19 @@ import io.ktor.serialization.kotlinx.json.json
 import io.ktor.client.plugins.auth.*
 import io.ktor.client.plugins.auth.providers.BearerTokens
 import io.ktor.client.plugins.auth.providers.bearer
-import io.ktor.client.plugins.websocket.DefaultClientWebSocketSession
 import io.ktor.client.plugins.websocket.WebSockets
-import io.ktor.client.plugins.websocket.receiveDeserialized
-import io.ktor.client.plugins.websocket.sendSerialized
-import io.ktor.client.plugins.websocket.webSocket
 import io.ktor.http.ContentType
-import io.ktor.http.HttpMethod
 import io.ktor.http.contentType
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.isActive
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+private val logger = KotlinLogging.logger {}
 
 class DefaultGameServerRepository(
-    private val context: Context, private val serverInfo: GameServerInfo
+    private val context: Context,
+    private val serverInfo: GameServerInfo,
 ) : GameServerRepository {
 
-    private lateinit var sentGameEventsStream: DefaultClientWebSocketSession
-    private val serverEventObserver = MutableSharedFlow<ServerEvent>()
     private fun loadAndroidAppInfo(): ClientInfo.AndroidApp {
         val packageInfo: PackageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
         return ClientInfo.AndroidApp(
@@ -64,7 +57,7 @@ class DefaultGameServerRepository(
         )
     }
 
-    private val httpClient = HttpClient(CIO) {
+    val httpClient = HttpClient(CIO) {
         install(io.ktor.client.plugins.contentnegotiation.ContentNegotiation) {
             json()
         }
@@ -134,25 +127,10 @@ class DefaultGameServerRepository(
     override suspend fun stopGame(gameId: GameId) {
         return httpClient.delete("games/$gameId") {}.body()
     }
-
-    override suspend fun observeGameEvents(gameId: GameId): Flow<ServerEvent> {
-        if (::sentGameEventsStream.isInitialized.not()) {
-            httpClient.webSocket(
-                method = HttpMethod.Get,
-                host = serverInfo.host,
-                port = serverInfo.port,
-                path = "/games/$gameId"
-            ) {
-                sentGameEventsStream = this
-                while (isActive) {
-                    serverEventObserver.emit(receiveDeserialized<ServerEventData>().toDomainEntity())
-                }
-            }
-        }
-        return serverEventObserver
-    }
-
-    override suspend fun sendGameEvent(gameId: GameId, event: ClientEvent) {
-        sentGameEventsStream.sendSerialized(event.toData())
-    }
 }
+
+@Serializable
+data class BaseServerEventType(
+    @SerialName("type")
+    val type: ServerEventType
+)

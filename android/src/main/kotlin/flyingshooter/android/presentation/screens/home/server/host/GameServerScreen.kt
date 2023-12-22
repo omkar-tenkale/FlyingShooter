@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import flyingshooter.android.domain.entities.GameInfo
 import flyingshooter.android.domain.entities.server.GetGameRoomsUseCase
 import flyingshooter.android.domain.entities.server.EndGameUseCase
 import flyingshooter.android.domain.entities.server.GameServerInfo
@@ -34,10 +33,12 @@ import flyingshooter.android.presentation.invoke
 import flyingshooter.android.presentation.remove
 import flyingshooter.android.presentation.screens.home.game.GameScreen
 import flyingshooter.android.presentation.updateResource
+import flyingshooter.core.domain.game.GameInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.core.scope.Scope
+import org.koin.java.KoinJavaComponent.getKoin
 
 
 data class GameServerScreen(val serverScope: Scope) : Screen {
@@ -81,7 +82,7 @@ data class GameServerScreen(val serverScope: Scope) : Screen {
                     val games = LoadingResource<List<GameInfo>>()
                     fun fetchGames() {
                         coroutineScope.launch {
-                            updateResource(games) { koin.get<GetGameRoomsUseCase>()(serverInfo) }
+                            updateResource(games) { koin.get<GetGameRoomsUseCase>()() }
                         }
                     }
                     LaunchedEffect(Unit) {
@@ -101,13 +102,18 @@ data class GameServerScreen(val serverScope: Scope) : Screen {
                                         modifier = Modifier
                                             .weight(1f)
                                             .clickable {
-                                                navigator.push(GameScreen(serverScope, game))
+
+                                                val gameScope =
+                                                    getKoin().createScope<GameInfo>()
+                                                gameScope.linkTo(serverScope)
+                                                gameScope.declare(game)
+                                                navigator.push(GameScreen(gameScope, game))
                                             })
                                     if (isUserServerAdmin()) {
                                         Button(onClick = {
                                             coroutineScope.launch {
                                                 koin.get<EndGameUseCase>()
-                                                    .invoke(serverInfo, game.id)
+                                                    .invoke(game.id)
                                                 games.remove(game)
                                             }
                                         }) {

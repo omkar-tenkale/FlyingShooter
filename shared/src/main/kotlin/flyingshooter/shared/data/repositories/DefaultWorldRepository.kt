@@ -1,8 +1,8 @@
 package flyingshooter.shared.data.repositories
 
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.World.Companion.family
+import flyingshooter.shared.domain.entities.game.GameCoroutineScope
 import flyingshooter.shared.domain.entities.game.base.ECSComponent
 import flyingshooter.shared.domain.entities.game.base.components.PositionComponent
 import flyingshooter.shared.domain.entities.game.base.systems.MoveSystem
@@ -10,14 +10,16 @@ import flyingshooter.shared.domain.entities.game.base.systems.PhysicsSystem
 import flyingshooter.shared.domain.entities.game.base.world.WorldRepository
 import flyingshooter.shared.domain.entities.game.events.GameEventRepository
 import io.github.oshai.kotlinlogging.KotlinLogging
+import kotlinx.coroutines.CoroutineScope
 import org.koin.core.scope.Scope
-import org.slf4j.impl.HandroidLoggerAdapter
 
-private val logger = KotlinLogging.logger {
-    HandroidLoggerAdapter.DEBUG = true
-}
+private val logger = KotlinLogging.logger {}
 
-internal class DefaultWorldRepository(val gameEventRepository: GameEventRepository, private val dependencyScope: Scope) : WorldRepository {
+internal class DefaultWorldRepository(
+    private val gameEventRepository: GameEventRepository,
+    private val dependencyScope: Scope,
+    val gameScope: GameCoroutineScope
+) : WorldRepository {
     private val world = com.github.quillraven.fleks.configureWorld() {
         injectables {
             add(dependencyScope)
@@ -34,8 +36,8 @@ internal class DefaultWorldRepository(val gameEventRepository: GameEventReposito
         }
 
         systems {
-            add(MoveSystem())
-            add(PhysicsSystem())
+            add(MoveSystem(dependencyScope,gameScope))
+            add(PhysicsSystem(dependencyScope))
         }
 
         onAddEntity { entity ->

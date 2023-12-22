@@ -1,4 +1,4 @@
-package flyingshooter.android.domain
+package flyingshooter.shared.domain.util
 
 sealed class Resource<T>(
     val data: T? = null,

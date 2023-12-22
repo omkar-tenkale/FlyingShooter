@@ -1,6 +1,6 @@
 package flyingshooter.android.data.datasource.remote.game.events.sent
 
-import flyingshooter.android.domain.entities.game.events.sent.ClientEvent
+import flyingshooter.core.domain.game.events.sent.ClientEvent
 
 class ClientEventData()
 

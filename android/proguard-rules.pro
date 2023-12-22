@@ -46,3 +46,7 @@
    boolean reportFixture(long);
    float   reportRayFixture(long, float, float, float, float, float);
 }
+
+-keep @flyingshooter.shared.domain.util.GuardedAgainstObfuscation class * {
+    *;
+}

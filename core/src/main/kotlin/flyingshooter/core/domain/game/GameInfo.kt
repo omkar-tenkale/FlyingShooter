@@ -1,4 +1,4 @@
-package flyingshooter.android.domain.entities
+package flyingshooter.core.domain.game
 
 class GameInfo(
     val id: String,

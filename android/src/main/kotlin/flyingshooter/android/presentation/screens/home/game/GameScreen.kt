@@ -18,12 +18,11 @@ import androidx.core.view.ViewCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.commit
 import cafe.adriel.voyager.core.screen.Screen
-import flyingshooter.android.domain.entities.GameInfo
+import flyingshooter.core.domain.game.GameInfo
 import org.koin.core.scope.Scope
 import kotlin.math.atan2
-import kotlin.math.log
 
-class GameScreen(val serverScope: Scope, game: GameInfo) : Screen {
+class GameScreen(val gameScope: Scope, game: GameInfo) : Screen {
 
     @Composable
     override fun Content() {
@@ -48,7 +47,7 @@ class GameScreen(val serverScope: Scope, game: GameInfo) : Screen {
 //                        }
                     }
                     activity.supportFragmentManager.commit {
-                        add(it.id, GameFragment(), GameFragment.TAG)
+                        add(it.id, GameFragment(gameScope), GameFragment.TAG)
                     }
                 }
             )

@@ -1,5 +1,6 @@
 package flyingshooter.android.domain
 
+import flyingshooter.core.domain.game.GameInfo
 import flyingshooter.android.domain.entities.server.GetRunningLocalGameServerInfoUseCase
 import flyingshooter.android.domain.entities.server.CreateGameUseCase
 import flyingshooter.android.domain.entities.server.EndGameUseCase
@@ -21,5 +22,8 @@ val domainModule = module {
         scopedOf(::IsUserServerAdminUseCase)
         scopedOf(::GetGameRoomsUseCase)
         scopedOf(::EndGameUseCase)
+    }
+    scope<GameInfo> {
+
     }
 }
