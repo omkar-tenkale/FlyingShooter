@@ -4,11 +4,11 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-class CreateGameResponse (
+class PostGameResponse (
     @SerialName("id") val id: String
 )
 @Serializable
-class ListGameResponse (
+class GetGamesResponse (
     @SerialName("games") val games: List<GameInfo>
 ){
     @Serializable

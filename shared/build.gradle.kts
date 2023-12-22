@@ -1,33 +1,36 @@
 plugins {
-  kotlin("plugin.serialization") version "1.9.21"
+    kotlin("plugin.serialization") version "1.9.21"
 }
 dependencies {
-  implementation(kotlin("stdlib"))
+    implementation(kotlin("stdlib"))
 
-  testImplementation(rootProject.extra["konsist"]!!)
-  testImplementation(rootProject.extra["kotest"]!!)
+    testImplementation(rootProject.extra["konsist"]!!)
+    testImplementation(rootProject.extra["kotest"]!!)
 
-  api("io.insert-koin:koin-core:${rootProject.extra["koinVersion"]!!}")
-  implementation("io.insert-koin:koin-ktor:${rootProject.extra["koinVersion"]!!}")
-  api("io.github.quillraven.fleks:Fleks:2.5")
+    api("io.insert-koin:koin-core:${rootProject.extra["koinVersion"]!!}")
+    implementation("io.insert-koin:koin-ktor:${rootProject.extra["koinVersion"]!!}")
+    api("io.github.quillraven.fleks:Fleks:2.5")
 
-  val gdxVersion = rootProject.extra["gdxVersion"]!!
-  api("com.badlogicgames.gdx:gdx-box2d:$gdxVersion")
+    val gdxVersion = rootProject.extra["gdxVersion"]!!
+    api("com.badlogicgames.gdx:gdx-box2d:$gdxVersion")
 
-  val ktorVersion = rootProject.extra["ktorVersion"]!!
-  implementation("io.ktor:ktor-server-netty:$ktorVersion")
-  implementation("io.ktor:ktor-server-core:$ktorVersion")
-  implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
-  implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
-  implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
-  implementation("io.ktor:ktor-server-websockets-jvm:$ktorVersion")
-  implementation("io.ktor:ktor-server-auth-jwt-jvm:$ktorVersion") {
-    exclude(group= "com.google.guava", module= "guava")
-  }
-  implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+    val ktorVersion = rootProject.extra["ktorVersion"]!!
+    implementation("io.ktor:ktor-server-netty:$ktorVersion")
+    implementation("io.ktor:ktor-server-core:$ktorVersion")
+    implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+    implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
+    implementation("io.ktor:ktor-server-websockets-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-auth-jwt-jvm:$ktorVersion") {
+        exclude(group = "com.google.guava", module = "guava")
+    }
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+
+    api("io.github.oshai:kotlin-logging-jvm:5.1.0")
+    api(group = "sk.baka.slf4j", name = "slf4j-handroid", version = "1.7.30")
 
 }
 
 tasks.withType<Test>().configureEach {
-  useJUnitPlatform()
+    useJUnitPlatform()
 }

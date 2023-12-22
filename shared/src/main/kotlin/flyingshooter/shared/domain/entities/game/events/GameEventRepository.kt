@@ -5,5 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 internal interface GameEventRepository {
     suspend fun sendEventToConnection(client: Client, event: GameEvent)
-    fun observeGameEvents(): Flow<Pair<Client, GameEvent>>
+    suspend fun sendEventToAll(event: GameEvent)
+    fun observeGameEvents(clientId: Int): Flow<GameEvent>
 }

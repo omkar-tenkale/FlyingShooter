@@ -20,7 +20,7 @@ const val PARAM_GAME_ID = "gameId"
 internal fun Routing.gameRoute() {
     route("/{$PARAM_GAME_ID}"){
 
-        webSocket("/events") {
+        webSocket{
             handleNewConnection()
         }
     }
@@ -34,7 +34,7 @@ private suspend fun DefaultWebSocketServerSession.handleNewConnection() {
     connections += client to this
 
     getKoin().getScope(gameId).let { scope ->
-        scope.get<ObserveGameEventsUseCase>()().filter { it.first == client }.onEach{
+        scope.get<ObserveGameEventsUseCase>()(client.id).onEach{
             sendSerialized(it)
         }.launchIn(GlobalScope)
 

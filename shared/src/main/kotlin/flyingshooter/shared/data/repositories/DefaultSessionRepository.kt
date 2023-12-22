@@ -3,6 +3,7 @@ package flyingshooter.shared.data.repositories
 import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
+import flyingshooter.shared.data.Constants
 import flyingshooter.shared.domain.entities.connection.ClientInfo
 import flyingshooter.shared.domain.entities.connection.ClientRepository
 import flyingshooter.shared.domain.entities.connection.ConnectionRepository
@@ -21,22 +22,22 @@ import java.util.concurrent.TimeUnit
 internal class DefaultSessionRepository(private val clientRepository: ClientRepository) : SessionRepository {
     fun getLocalIpAddress(): String? {
         return "localhost"
-        try {
-            val en = NetworkInterface.getNetworkInterfaces()
-            while (en.hasMoreElements()) {
-                val intf = en.nextElement()
-                val enumIpAddr = intf.inetAddresses
-                while (enumIpAddr.hasMoreElements()) {
-                    val inetAddress = enumIpAddr.nextElement()
-                    if (!inetAddress.isLoopbackAddress && inetAddress is Inet4Address) {
-                        return inetAddress.getHostAddress()
-                    }
-                }
-            }
-        } catch (ex: SocketException) {
-            ex.printStackTrace()
-        }
-        return null
+//        try {
+//            val en = NetworkInterface.getNetworkInterfaces()
+//            while (en.hasMoreElements()) {
+//                val intf = en.nextElement()
+//                val enumIpAddr = intf.inetAddresses
+//                while (enumIpAddr.hasMoreElements()) {
+//                    val inetAddress = enumIpAddr.nextElement()
+//                    if (!inetAddress.isLoopbackAddress && inetAddress is Inet4Address) {
+//                        return inetAddress.getHostAddress()
+//                    }
+//                }
+//            }
+//        } catch (ex: SocketException) {
+//            ex.printStackTrace()
+//        }
+//        return null
     }
 
     override fun createSessionToken(clientInfo: ClientInfo,ip: String): String {
@@ -46,7 +47,7 @@ internal class DefaultSessionRepository(private val clientRepository: ClientRepo
 
 internal object UnauthorizedError : java.lang.IllegalStateException("Unauthorized")
 
-val algorithm: Algorithm by lazy { Algorithm.HMAC256("secret") }
+val algorithm: Algorithm by lazy { Algorithm.HMAC256(Constants.JWT_SECRET) }
 
 internal fun signAccessToken(clientId: String, isAdmin: Boolean = false): String = JWT.create()
     .withExpiresAt(Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(90)))

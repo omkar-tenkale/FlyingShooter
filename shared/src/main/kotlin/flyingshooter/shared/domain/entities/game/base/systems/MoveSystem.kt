@@ -4,6 +4,6 @@ import com.github.quillraven.fleks.IntervalSystem
 
 internal class MoveSystem: IntervalSystem() {
     override fun onTick() {
-        TODO("Not yet implemented")
+
     }
 }

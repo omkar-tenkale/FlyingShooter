@@ -6,10 +6,13 @@ import flyingshooter.shared.data.repositories.DefaultSessionRepository
 import flyingshooter.shared.domain.entities.connection.ClientRepository
 import flyingshooter.shared.domain.entities.connection.SessionRepository
 import flyingshooter.shared.domain.entities.game.GameRepository
+import flyingshooter.shared.presentation.GameServer
 import org.koin.dsl.module
 
 internal val dataModule = module {
-    single<SessionRepository> { DefaultSessionRepository(get()) }
-    single<ClientRepository> { DefaultClientRepository() }
-    single<GameRepository> { DefaultGameRepository() }
+    scope<GameServer> {
+        scoped<SessionRepository> { DefaultSessionRepository(get()) }
+        scoped<ClientRepository> { DefaultClientRepository() }
+        scoped<GameRepository> { DefaultGameRepository() }
+    }
 }

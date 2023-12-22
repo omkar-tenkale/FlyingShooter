@@ -1,6 +1,7 @@
 package flyingshooter.shared.presentation.routes.sessions
 
 import flyingshooter.shared.domain.entities.connection.CreateSessionUseCase
+import flyingshooter.shared.presentation.serverScope
 import io.ktor.server.application.call
 import io.ktor.server.plugins.origin
 import io.ktor.server.request.receive
@@ -55,7 +56,7 @@ internal fun Route.sessionsRoute() {
     route("/sessions") {
         post {
             val body = call.receive<CreateSessionRequest>()
-            val token = call.scope.get<CreateSessionUseCase>()(
+            val token = call.serverScope.get<CreateSessionUseCase>()(
                 body.client.toDomainEntity(), call.request.origin.remoteHost
             )
             call.response.headers.append("Authorization", "Bearer $token")

@@ -25,6 +25,8 @@ import io.ktor.server.websocket.WebSockets
 import io.ktor.server.websocket.pingPeriod
 import io.ktor.server.websocket.timeout
 import kotlinx.serialization.json.Json
+import org.koin.core.scope.Scope
+import org.koin.java.KoinJavaComponent.getKoin
 import org.koin.ktor.plugin.Koin
 import java.time.Duration
 
@@ -33,6 +35,7 @@ fun GameServer(port: Int = 5383): GameServer {
 }
 
 private class DefaultGameServer(port: Int) : GameServer {
+    val serverScope = getKoin().createScope<GameServer>()
     private val instance by lazy {
         embeddedServer(Netty, port = port, module = {
             install(ContentNegotiation){
@@ -49,11 +52,12 @@ private class DefaultGameServer(port: Int) : GameServer {
                     }
                 }
             }
-            install(Koin) {
+            install(getAppLinkedKoin(serverScope)) {
                 modules(dataModule, domainModule, presentationModule)
             }
             install(StatusPages) {
                 exception<Throwable> { call, cause ->
+                    cause.printStackTrace()
                     call.respond(
                         HttpStatusCode.InternalServerError,
                         cause.localizedMessage ?: "Internal Server Error"
@@ -83,5 +87,6 @@ private class DefaultGameServer(port: Int) : GameServer {
 
     override fun stop() {
         instance.stop()
+        serverScope.close()
     }
 }

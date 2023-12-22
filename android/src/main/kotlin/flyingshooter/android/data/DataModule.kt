@@ -17,7 +17,7 @@ val dataModule = module {
     single<PrefRepository> { DefaultPrefRepository(get()) }
     single<LocalServerRepository>{ DefaultLocalServerRepository() }
     scope<GameServerInfo> {
-        scoped<GameServerRepository> { DefaultGameServerRepository(get(),get()) }
         scoped<UserRepository> { DefaultUserRepository(get()) }
+        scoped<GameServerRepository> { DefaultGameServerRepository(get(),get()) }
     }
 }

@@ -1,30 +1,38 @@
 package flyingshooter.shared.presentation.routes.games
 
 import flyingshooter.shared.domain.entities.game.CreateGameUseCase
+import flyingshooter.shared.domain.entities.game.EndGameUseCase
 import flyingshooter.shared.domain.entities.game.GetActiveGamesUseCase
 import flyingshooter.shared.domain.entities.game.deathmatch.DeathMatchGame
+import flyingshooter.shared.presentation.routes.games.game.PARAM_GAME_ID
+import flyingshooter.shared.presentation.serverScope
+import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
-import io.ktor.server.routing.Routing
+import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
-import io.ktor.server.websocket.webSocket
-import io.ktor.websocket.Frame
-import io.ktor.websocket.readText
-import org.koin.ktor.plugin.scope
 
 internal fun Route.gamesRoute() {
     route("/games"){
         get {
-            call.respond(ListGameResponse(games = call.scope.get<GetActiveGamesUseCase>()().map{ ListGameResponse.GameInfo(it.id,it.name) }))
+            call.respond(GetGamesResponse(games = call.serverScope.get<GetActiveGamesUseCase>()().map{ GetGamesResponse.GameInfo(it.id,it.name) }))
         }
         post {
             DeathMatchGame().also {
-                call.scope.get<CreateGameUseCase>()(it)
-                call.respond(CreateGameResponse(it.id))
+                call.serverScope.get<CreateGameUseCase>()(it)
+                call.respond(PostGameResponse(it.id))
             }
         }
+        route("/{$PARAM_GAME_ID}"){
+            delete {
+                val gameId = call.parameters[PARAM_GAME_ID]!!
+                call.serverScope.get<EndGameUseCase>()(gameId)
+                call.respond(HttpStatusCode.OK)
+            }
+        }
+
     }
 }
